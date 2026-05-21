@@ -1,6 +1,8 @@
 const API = "https://public.api.bsky.app/xrpc";
 const WINDOW_DAYS = 90;
+const WINDOW_MS = WINDOW_DAYS * 24 * 60 * 60 * 1000;
 const CONCURRENCY = 6;
+const SPARK_BINS = 30;
 
 const form = document.getElementById("form");
 const handleInput = document.getElementById("handle");
@@ -9,6 +11,15 @@ const statusEl = document.getElementById("status");
 const resultsEl = document.getElementById("results");
 const rowsEl = document.getElementById("rows");
 const summaryEl = document.getElementById("summary");
+const headEl = document.getElementById("head");
+
+const state = {
+  rows: [],
+  profile: null,
+  cutoff: 0,
+  sortKey: "perDay",
+  sortDir: "desc",
+};
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -26,6 +37,20 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
+headEl.addEventListener("click", (e) => {
+  const th = e.target.closest("th[data-sort-key]");
+  if (!th) return;
+  const key = th.dataset.sortKey;
+  if (state.sortKey === key) {
+    state.sortDir = state.sortDir === "desc" ? "asc" : "desc";
+  } else {
+    state.sortKey = key;
+    state.sortDir = "desc";
+  }
+  renderRows();
+  updateHeaderSortIndicators();
+});
+
 async function run(handle) {
   setStatus(`Resolving @${handle}…`);
   const profile = await api("app.bsky.actor.getProfile", { actor: handle });
@@ -38,8 +63,8 @@ async function run(handle) {
     return;
   }
 
-  const cutoff = Date.now() - WINDOW_DAYS * 24 * 60 * 60 * 1000;
-  const counts = new Array(follows.length).fill(0);
+  const cutoff = Date.now() - WINDOW_MS;
+  const activity = new Array(follows.length).fill(null);
   let completed = 0;
   setStatus(
     `Counting posts in the last ${WINDOW_DAYS} days for ${follows.length} accounts…`,
@@ -47,7 +72,7 @@ async function run(handle) {
   );
 
   await pool(follows, CONCURRENCY, async (f, i) => {
-    counts[i] = await countPostsSince(f.did, cutoff);
+    activity[i] = await gatherActivity(f.did, cutoff);
     completed += 1;
     setStatus(
       `Counting posts in the last ${WINDOW_DAYS} days… ${completed} / ${follows.length}`,
@@ -55,11 +80,26 @@ async function run(handle) {
     );
   });
 
-  const ranked = follows
-    .map((f, i) => ({ ...f, posts: counts[i], perDay: counts[i] / WINDOW_DAYS }))
-    .sort((a, b) => b.perDay - a.perDay);
+  state.profile = profile;
+  state.cutoff = cutoff;
+  state.rows = follows.map((f, i) => {
+    const a = activity[i] || { originals: 0, reposts: 0, timestamps: [] };
+    const total = a.originals + a.reposts;
+    return {
+      ...f,
+      originals: a.originals,
+      reposts: a.reposts,
+      total,
+      perDay: total / WINDOW_DAYS,
+      timestamps: a.timestamps,
+    };
+  });
 
-  render(ranked, profile);
+  resultsEl.hidden = false;
+  summaryEl.textContent =
+    `${state.rows.length} follows · last ${WINDOW_DAYS} days · viewing @${profile.handle}`;
+  updateHeaderSortIndicators();
+  renderRows();
   hideStatus();
 }
 
@@ -78,8 +118,10 @@ async function getAllFollows(did) {
   return out;
 }
 
-async function countPostsSince(did, cutoffMs) {
-  let count = 0;
+async function gatherActivity(did, cutoffMs) {
+  let originals = 0;
+  let reposts = 0;
+  const timestamps = [];
   let cursor;
   // Safety bound — termination is normally driven by the cutoff or an empty
   // cursor. 500 pages = 50k posts, enough for ~555 posts/day over 90 days.
@@ -98,16 +140,18 @@ async function countPostsSince(did, cutoffMs) {
       if (ts == null) continue;
       if (ts < cutoffMs) { stop = true; break; }
       if (item.reason) {
-        count += 1;
+        reposts += 1;
+        timestamps.push(ts);
       } else if (item.post && item.post.author && item.post.author.did === did) {
-        count += 1;
+        originals += 1;
+        timestamps.push(ts);
       }
     }
     if (stop) break;
     cursor = data.cursor;
     if (!cursor) break;
   }
-  return count;
+  return { originals, reposts, timestamps };
 }
 
 function postTimestamp(item) {
@@ -154,15 +198,12 @@ function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-function render(rows, profile) {
-  resultsEl.hidden = false;
-  summaryEl.textContent =
-    `${rows.length} follows · last ${WINDOW_DAYS} days · viewing @${profile.handle}`;
+function renderRows() {
+  const sorted = state.rows.slice().sort(compareRows);
   const frag = document.createDocumentFragment();
-  rows.forEach((r, i) => {
+  for (const r of sorted) {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td class="num">${i + 1}</td>
       <td>
         <div class="account">
           ${r.avatar
@@ -174,14 +215,63 @@ function render(rows, profile) {
             </a>
             <span class="account-handle">@${escapeHtml(r.handle)}</span>
           </div>
+          ${renderSparkline(r.timestamps, state.cutoff)}
         </div>
       </td>
-      <td class="num">${r.posts}</td>
-      <td class="num">${r.perDay.toFixed(2)}</td>
+      <td class="num" data-label="Posts/Day">${r.perDay.toFixed(2)}</td>
+      <td class="num" data-label="Total">${r.total}</td>
+      <td class="num" data-label="Original">${r.originals}</td>
+      <td class="num" data-label="Reposts">${r.reposts}</td>
     `;
     frag.appendChild(tr);
-  });
+  }
+  rowsEl.innerHTML = "";
   rowsEl.appendChild(frag);
+}
+
+function compareRows(a, b) {
+  const k = state.sortKey;
+  const dir = state.sortDir === "asc" ? 1 : -1;
+  const av = a[k];
+  const bv = b[k];
+  if (av < bv) return -1 * dir;
+  if (av > bv) return 1 * dir;
+  return 0;
+}
+
+function updateHeaderSortIndicators() {
+  const ths = headEl.querySelectorAll("th[data-sort-key]");
+  ths.forEach((th) => {
+    if (th.dataset.sortKey === state.sortKey) {
+      th.setAttribute("aria-sort", state.sortDir === "asc" ? "ascending" : "descending");
+    } else {
+      th.removeAttribute("aria-sort");
+    }
+  });
+}
+
+function renderSparkline(timestamps, cutoffMs) {
+  const W = 80;
+  const H = 20;
+  const bins = new Array(SPARK_BINS).fill(0);
+  const span = Date.now() - cutoffMs;
+  for (const t of timestamps) {
+    const rel = (t - cutoffMs) / span;
+    let idx = Math.floor(rel * SPARK_BINS);
+    if (idx < 0) idx = 0;
+    if (idx >= SPARK_BINS) idx = SPARK_BINS - 1;
+    bins[idx] += 1;
+  }
+  const max = Math.max(...bins, 1);
+  const stepX = W / (SPARK_BINS - 1);
+  const points = bins
+    .map((v, i) => {
+      const x = (i * stepX).toFixed(2);
+      const y = (H - (v / max) * (H - 2) - 1).toFixed(2);
+      return `${x},${y}`;
+    })
+    .join(" ");
+  return `<svg class="sparkline" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><polyline points="${points}" fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke" /></svg>`;
 }
 
 function setStatus(msg, opts = {}) {

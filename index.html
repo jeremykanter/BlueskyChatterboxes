@@ -41,12 +41,13 @@
         <span id="summary" class="summary"></span>
       </div>
       <table>
-        <thead>
+        <thead id="head">
           <tr>
-            <th>#</th>
             <th>Account</th>
-            <th class="num">Posts</th>
-            <th class="num">Posts / day</th>
+            <th class="num sortable" data-sort-key="perDay">Posts/Day</th>
+            <th class="num sortable" data-sort-key="total">Total Posts</th>
+            <th class="num sortable" data-sort-key="originals">Original Posts</th>
+            <th class="num sortable" data-sort-key="reposts">Reposts</th>
           </tr>
         </thead>
         <tbody id="rows"></tbody>
