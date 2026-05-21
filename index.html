@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Most Active Bluesky Follows</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main>
+    <h1>Most Active Bluesky Follows</h1>
+    <p class="subtitle">
+      Enter a Bluesky handle to rank the accounts they follow by posts per day
+      over the last 3 months.
+    </p>
+
+    <form id="form">
+      <label for="handle">Bluesky handle</label>
+      <div class="row">
+        <input
+          id="handle"
+          type="text"
+          placeholder="e.g. bsky.app or alice.bsky.social"
+          autocomplete="off"
+          spellcheck="false"
+          required
+        />
+        <button type="submit" id="go">Analyze</button>
+      </div>
+      <p class="hint">
+        Uses the public Bluesky API. No login required. Large follow lists may
+        take a few minutes.
+      </p>
+    </form>
+
+    <section id="status" class="status" hidden></section>
+
+    <section id="results" hidden>
+      <div class="results-header">
+        <h2>Results</h2>
+        <span id="summary" class="summary"></span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Account</th>
+            <th class="num">Posts</th>
+            <th class="num">Posts / day</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
