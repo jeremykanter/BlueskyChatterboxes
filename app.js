@@ -81,7 +81,9 @@ async function getAllFollows(did) {
 async function countPostsSince(did, cutoffMs) {
   let count = 0;
   let cursor;
-  for (let page = 0; page < 20; page += 1) {
+  // Safety bound — termination is normally driven by the cutoff or an empty
+  // cursor. 500 pages = 50k posts, enough for ~555 posts/day over 90 days.
+  for (let page = 0; page < 500; page += 1) {
     const data = await api("app.bsky.feed.getAuthorFeed", {
       actor: did,
       limit: 100,
