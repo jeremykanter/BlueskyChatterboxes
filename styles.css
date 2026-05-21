@@ -8,6 +8,22 @@
     --accent: #1d9bf0;
     --accent-hover: #1a8cd8;
     --error: #b91c1c;
+    --avatar-stroke: rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #0f1115;
+        --panel: #161a20;
+        --panel-alt: #1d222a;
+        --border: #2a313b;
+        --text: #ffffff;
+        --muted: #9aa3ad;
+        --accent: #1d9bf0;
+        --accent-hover: #4ab1f4;
+        --error: #f87171;
+        --avatar-stroke: rgba(255, 255, 255, 0.05);
+    }
 }
 
 * {
@@ -20,8 +36,8 @@ body {
     padding: 0;
     background: var(--bg);
     color: var(--text);
-    font-family:
-        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, sans-serif;
     font-size: 14px;
     line-height: 1.25;
 }
@@ -35,10 +51,6 @@ main {
 h1 {
     margin: 0 0 6px;
     font-size: 24px;
-}
-h2 {
-    margin: 0;
-    font-size: 16px;
 }
 
 .subtitle {
@@ -71,6 +83,7 @@ input[type="text"] {
     border-radius: 6px;
     color: var(--text);
     font-size: 14px;
+    font-family: inherit;
 }
 
 input[type="text"]:focus {
@@ -87,6 +100,7 @@ button {
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+    font-family: inherit;
 }
 
 button:hover:not(:disabled) {
@@ -116,18 +130,6 @@ button:disabled {
 .status.error {
     color: var(--error);
     border-color: var(--error);
-}
-
-.results-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 10px;
-}
-
-.summary {
-    color: var(--muted);
-    font-size: 12px;
 }
 
 table {
@@ -165,23 +167,27 @@ th.sortable:hover {
     color: var(--text);
 }
 
-th.sortable::after {
-    content: "";
+th.sortable::before {
+    content: "▾";
     display: inline-block;
-    width: 0.8em;
-    margin-left: 4px;
-    color: var(--muted);
+    width: 0.9em;
+    margin-right: 4px;
+    color: transparent;
+    text-align: left;
 }
 
-th.sortable[aria-sort="ascending"]::after {
-    content: "▲";
+th.sortable[aria-sort="ascending"]::before {
+    content: "▴";
     color: var(--text);
 }
-th.sortable[aria-sort="descending"]::after {
-    content: "▼";
+th.sortable[aria-sort="descending"]::before {
+    content: "▾";
     color: var(--text);
 }
 
+tbody tr {
+    cursor: pointer;
+}
 tbody tr:last-child td {
     border-bottom: none;
 }
@@ -193,6 +199,10 @@ tbody tr:hover {
     text-align: right;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
+}
+
+tbody td.num {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 .account {
@@ -209,27 +219,21 @@ tbody tr:hover {
     background: var(--border);
     object-fit: cover;
     flex-shrink: 0;
+    box-shadow: inset 0 0 0 1px var(--avatar-stroke);
 }
 
 .account-name {
     min-width: 0;
     flex: 1;
-}
-
-.account-name a {
     color: var(--text);
-    text-decoration: none;
     font-weight: 600;
-}
-
-.account-name a:hover {
-    text-decoration: underline;
 }
 
 .account-handle {
     display: block;
     color: var(--muted);
     font-size: 12px;
+    font-weight: 400;
 }
 
 .sparkline {
@@ -318,6 +322,7 @@ tbody tr:hover {
         text-transform: uppercase;
         letter-spacing: 0.03em;
         margin-bottom: 2px;
+        font-family: "IBM Plex Sans", system-ui, sans-serif;
     }
 }
 

@@ -10,7 +10,6 @@ const goBtn = document.getElementById("go");
 const statusEl = document.getElementById("status");
 const resultsEl = document.getElementById("results");
 const rowsEl = document.getElementById("rows");
-const summaryEl = document.getElementById("summary");
 const headEl = document.getElementById("head");
 
 const state = {
@@ -35,6 +34,13 @@ form.addEventListener("submit", async (e) => {
   } finally {
     goBtn.disabled = false;
   }
+});
+
+rowsEl.addEventListener("click", (e) => {
+  const tr = e.target.closest("tr[data-handle]");
+  if (!tr) return;
+  const url = `https://bsky.app/profile/${tr.dataset.handle}`;
+  window.open(url, "_blank", "noopener");
 });
 
 headEl.addEventListener("click", (e) => {
@@ -96,7 +102,6 @@ async function run(handle) {
   });
 
   resultsEl.hidden = false;
-  summaryEl.textContent = `${state.rows.length} follows · last ${WINDOW_DAYS} days · viewing @${profile.handle}`;
   updateHeaderSortIndicators();
   renderRows();
   hideStatus();
@@ -212,6 +217,7 @@ function renderRows() {
   const frag = document.createDocumentFragment();
   for (const r of sorted) {
     const tr = document.createElement("tr");
+    tr.dataset.handle = r.handle;
     tr.innerHTML = `
       <td>
         <div class="account">
@@ -221,9 +227,7 @@ function renderRows() {
               : `<div class="avatar"></div>`
           }
           <div class="account-name">
-            <a href="https://bsky.app/profile/${escapeAttr(r.handle)}" target="_blank" rel="noopener">
-              ${escapeHtml(r.displayName || r.handle)}
-            </a>
+            ${escapeHtml(r.displayName || r.handle)}
             <span class="account-handle">@${escapeHtml(r.handle)}</span>
           </div>
           ${renderSparkline(r.timestamps, state.cutoff)}
