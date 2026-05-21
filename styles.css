@@ -288,7 +288,7 @@ tbody td.num {
     transition: width 0.2s;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 880px) {
     main {
         padding: 20px 14px 60px;
     }
