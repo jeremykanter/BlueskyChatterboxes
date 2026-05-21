@@ -75,7 +75,7 @@ async function run(handle) {
     activity[i] = await gatherActivity(f.did, cutoff);
     completed += 1;
     setStatus(
-      `Counting posts in the last ${WINDOW_DAYS} days… ${completed} / ${follows.length}`,
+      `Counting posts in the last ${WINDOW_DAYS} days… ${completed} / ${follows.length} accounts`,
       { progress: completed / follows.length },
     );
   });
@@ -96,8 +96,7 @@ async function run(handle) {
   });
 
   resultsEl.hidden = false;
-  summaryEl.textContent =
-    `${state.rows.length} follows · last ${WINDOW_DAYS} days · viewing @${profile.handle}`;
+  summaryEl.textContent = `${state.rows.length} follows · last ${WINDOW_DAYS} days · viewing @${profile.handle}`;
   updateHeaderSortIndicators();
   renderRows();
   hideStatus();
@@ -138,11 +137,18 @@ async function gatherActivity(did, cutoffMs) {
     for (const item of items) {
       const ts = postTimestamp(item);
       if (ts == null) continue;
-      if (ts < cutoffMs) { stop = true; break; }
+      if (ts < cutoffMs) {
+        stop = true;
+        break;
+      }
       if (item.reason) {
         reposts += 1;
         timestamps.push(ts);
-      } else if (item.post && item.post.author && item.post.author.did === did) {
+      } else if (
+        item.post &&
+        item.post.author &&
+        item.post.author.did === did
+      ) {
         originals += 1;
         timestamps.push(ts);
       }
@@ -166,17 +172,20 @@ function postTimestamp(item) {
 
 async function pool(items, size, worker) {
   let idx = 0;
-  const runners = Array.from({ length: Math.min(size, items.length) }, async () => {
-    while (true) {
-      const i = idx++;
-      if (i >= items.length) return;
-      try {
-        await worker(items[i], i);
-      } catch (_) {
-        // Leave count at 0 on per-account failure; keep going.
+  const runners = Array.from(
+    { length: Math.min(size, items.length) },
+    async () => {
+      while (true) {
+        const i = idx++;
+        if (i >= items.length) return;
+        try {
+          await worker(items[i], i);
+        } catch (_) {
+          // Leave count at 0 on per-account failure; keep going.
+        }
       }
-    }
-  });
+    },
+  );
   await Promise.all(runners);
 }
 
@@ -206,9 +215,11 @@ function renderRows() {
     tr.innerHTML = `
       <td>
         <div class="account">
-          ${r.avatar
-            ? `<img class="avatar" src="${escapeAttr(r.avatar)}" alt="" loading="lazy" />`
-            : `<div class="avatar"></div>`}
+          ${
+            r.avatar
+              ? `<img class="avatar" src="${escapeAttr(r.avatar)}" alt="" loading="lazy" />`
+              : `<div class="avatar"></div>`
+          }
           <div class="account-name">
             <a href="https://bsky.app/profile/${escapeAttr(r.handle)}" target="_blank" rel="noopener">
               ${escapeHtml(r.displayName || r.handle)}
@@ -220,7 +231,7 @@ function renderRows() {
       </td>
       <td class="num" data-label="Posts/Day">${r.perDay.toFixed(2)}</td>
       <td class="num" data-label="Total">${r.total}</td>
-      <td class="num" data-label="Original">${r.originals}</td>
+      <td class="num" data-label="Originals">${r.originals}</td>
       <td class="num" data-label="Reposts">${r.reposts}</td>
     `;
     frag.appendChild(tr);
@@ -243,7 +254,10 @@ function updateHeaderSortIndicators() {
   const ths = headEl.querySelectorAll("th[data-sort-key]");
   ths.forEach((th) => {
     if (th.dataset.sortKey === state.sortKey) {
-      th.setAttribute("aria-sort", state.sortDir === "asc" ? "ascending" : "descending");
+      th.setAttribute(
+        "aria-sort",
+        state.sortDir === "asc" ? "ascending" : "descending",
+      );
     } else {
       th.removeAttribute("aria-sort");
     }
@@ -271,7 +285,7 @@ function renderSparkline(timestamps, cutoffMs) {
       return `${x},${y}`;
     })
     .join(" ");
-  return `<svg class="sparkline" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><polyline points="${points}" fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke" /></svg>`;
+  return `<svg class="sparkline" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><polyline points="${points}" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke" /></svg>`;
 }
 
 function setStatus(msg, opts = {}) {
@@ -285,7 +299,9 @@ function setStatus(msg, opts = {}) {
   statusEl.innerHTML = html;
 }
 
-function hideStatus() { statusEl.hidden = true; }
+function hideStatus() {
+  statusEl.hidden = true;
+}
 
 function showError(msg) {
   statusEl.hidden = false;
@@ -294,8 +310,18 @@ function showError(msg) {
 }
 
 function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, (c) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
-  }[c]));
+  return String(s).replace(
+    /[&<>"']/g,
+    (c) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[c],
+  );
 }
-function escapeAttr(s) { return escapeHtml(s); }
+function escapeAttr(s) {
+  return escapeHtml(s);
+}
