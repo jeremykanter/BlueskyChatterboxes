@@ -97,9 +97,9 @@ async function countPostsSince(did, cutoffMs) {
       const ts = postTimestamp(item);
       if (ts == null) continue;
       if (ts < cutoffMs) { stop = true; break; }
-      // Only count original posts by this author (skip reposts).
-      if (item.reason) continue;
-      if (item.post && item.post.author && item.post.author.did === did) {
+      if (item.reason) {
+        count += 1;
+      } else if (item.post && item.post.author && item.post.author.did === did) {
         count += 1;
       }
     }
