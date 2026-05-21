@@ -308,7 +308,7 @@ tbody td.num {
     }
     tbody tr {
         display: block;
-        padding: 12px;
+        padding: 12px 0;
         border-bottom: 1px solid var(--border);
     }
     tbody tr:hover {
