@@ -11,6 +11,7 @@ const statusEl = document.getElementById("status");
 const resultsEl = document.getElementById("results");
 const rowsEl = document.getElementById("rows");
 const headEl = document.getElementById("head");
+const sortSelectEl = document.getElementById("sort-select");
 
 const state = {
   rows: [],
@@ -53,6 +54,14 @@ headEl.addEventListener("click", (e) => {
     state.sortKey = key;
     state.sortDir = "desc";
   }
+  renderRows();
+  updateHeaderSortIndicators();
+  sortSelectEl.value = state.sortKey;
+});
+
+sortSelectEl.addEventListener("change", () => {
+  state.sortKey = sortSelectEl.value;
+  state.sortDir = "desc";
   renderRows();
   updateHeaderSortIndicators();
 });
@@ -102,6 +111,7 @@ async function run(handle) {
   });
 
   resultsEl.hidden = false;
+  sortSelectEl.value = state.sortKey;
   updateHeaderSortIndicators();
   renderRows();
   hideStatus();

@@ -132,6 +132,35 @@ button:disabled {
     border-color: var(--error);
 }
 
+.sort-control {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.sort-control label {
+    margin: 0;
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.sort-control select {
+    flex: 1;
+    padding: 8px 11px;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.sort-control select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -259,7 +288,7 @@ tbody td.num {
     transition: width 0.2s;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 880px) {
     main {
         padding: 20px 14px 60px;
     }
@@ -274,9 +303,12 @@ tbody td.num {
     thead {
         display: none;
     }
+    .sort-control {
+        display: flex;
+    }
     tbody tr {
         display: block;
-        padding: 12px;
+        padding: 12px 0;
         border-bottom: 1px solid var(--border);
     }
     tbody tr:hover {
