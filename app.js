@@ -17,7 +17,7 @@ const state = {
   rows: [],
   profile: null,
   cutoff: 0,
-  sortKey: "perDay",
+  sortKey: "total",
   sortDir: "desc",
 };
 
@@ -240,10 +240,14 @@ function renderRows() {
             ${escapeHtml(r.displayName || r.handle)}
             <span class="account-handle">@${escapeHtml(r.handle)}</span>
           </div>
+          <div class="account-stat">
+            <span class="account-stat-label">Posts/Day</span>
+            <span class="account-stat-value">${r.perDay.toFixed(2)}</span>
+          </div>
           ${renderSparkline(r.timestamps, state.cutoff)}
         </div>
       </td>
-      <td class="num" data-label="Posts/Day">${r.perDay.toFixed(2)}</td>
+      <td class="num posts-per-day" data-label="Posts/Day">${r.perDay.toFixed(2)}</td>
       <td class="num" data-label="Total">${r.total}</td>
       <td class="num" data-label="Originals">${r.originals}</td>
       <td class="num" data-label="Reposts">${r.reposts}</td>

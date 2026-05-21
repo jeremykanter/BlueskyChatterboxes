@@ -265,12 +265,36 @@ tbody td.num {
     font-weight: 400;
 }
 
+.account-stat {
+    flex-shrink: 0;
+    margin-left: auto;
+    text-align: left;
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.account-stat-label {
+    display: block;
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 2px;
+}
+
+tbody td.posts-per-day {
+    display: none;
+}
+
 .sparkline {
     width: 80px;
     height: 20px;
     color: var(--muted);
     flex-shrink: 0;
-    margin-left: auto;
 }
 
 .progress {
@@ -305,6 +329,12 @@ tbody td.num {
     }
     .sort-control {
         display: flex;
+    }
+    .account-stat {
+        display: none;
+    }
+    tbody td.posts-per-day {
+        display: block;
     }
     tbody tr {
         display: block;
