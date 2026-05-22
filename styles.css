@@ -1,28 +1,28 @@
 :root {
     --bg: #ffffff;
-    --panel: #fafbfc;
-    --panel-alt: #f1f3f5;
-    --border: #d0d7de;
+    --panel: #f7f7f7;
+    --panel-alt: #f0f0f0;
+    --border: #e6e6e6;
     --text: #000000;
-    --muted: #555555;
-    --accent: #1d9bf0;
-    --accent-hover: #1a8cd8;
-    --error: #b91c1c;
-    --avatar-stroke: rgba(0, 0, 0, 0.05);
+    --muted: #999999;
+    --accent: #000000;
+    --accent-hover: #0f0f0f;
+    --error: #ff3333;
+    --avatar-stroke: rgba(0, 0, 0, 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg: #0f1115;
-        --panel: #161a20;
-        --panel-alt: #1d222a;
-        --border: #2a313b;
+        --bg: #000000;
+        --panel: #080808;
+        --panel-alt: #0f0f0f;
+        --border: #1a1a1a;
         --text: #ffffff;
-        --muted: #9aa3ad;
-        --accent: #1d9bf0;
-        --accent-hover: #4ab1f4;
-        --error: #f87171;
-        --avatar-stroke: rgba(255, 255, 255, 0.05);
+        --muted: #666666;
+        --accent: #ffffff;
+        --accent-hover: #f0f0f0;
+        --error: #ff4d4d;
+        --avatar-stroke: rgba(255, 255, 255, 0.1);
     }
 }
 
@@ -36,38 +36,41 @@ body {
     padding: 0;
     background: var(--bg);
     color: var(--text);
-    font-family: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", Roboto, sans-serif;
-    font-size: 14px;
+    font-family:
+        "IBM Plex Sans",
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        sans-serif;
+    font-size: 13px;
     line-height: 1.25;
 }
 
 main {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 32px 20px 80px;
+    padding: 40px 20px 80px;
 }
 
 h1 {
     margin: 0 0 6px;
-    font-size: 24px;
+    font-size: 18px;
 }
 
 .subtitle {
-    color: var(--muted);
-    margin: 0 0 20px;
-    font-size: 13px;
+    margin: 0 0 24px;
 }
 
 form {
-    margin-bottom: 18px;
+    margin-bottom: 24px;
 }
 
 label {
     display: block;
-    font-size: 12px;
     color: var(--muted);
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .row {
@@ -77,18 +80,17 @@ label {
 
 input[type="text"] {
     flex: 1;
-    padding: 8px 11px;
+    padding: 8px 12px;
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 6px;
     color: var(--text);
-    font-size: 14px;
     font-family: inherit;
 }
 
 input[type="text"]:focus {
     outline: none;
-    border-color: var(--accent);
+    border: 2px solid var(--accent);
 }
 
 button {
@@ -97,8 +99,6 @@ button {
     color: white;
     border: none;
     border-radius: 6px;
-    font-size: 14px;
-    font-weight: 600;
     cursor: pointer;
     font-family: inherit;
 }
@@ -113,18 +113,15 @@ button:disabled {
 
 .hint {
     color: var(--muted);
-    font-size: 12px;
-    margin: 6px 0 0;
 }
 
 .status {
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 10px 14px;
-    margin-bottom: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
     color: var(--muted);
-    font-size: 13px;
 }
 
 .status.error {
@@ -136,23 +133,21 @@ button:disabled {
     display: none;
     align-items: center;
     gap: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
 }
 
 .sort-control label {
     margin: 0;
-    font-size: 12px;
     color: var(--muted);
 }
 
 .sort-control select {
     flex: 1;
-    padding: 8px 11px;
+    padding: 8px 12px;
     background: var(--bg);
     color: var(--text);
     border: 1px solid var(--border);
     border-radius: 6px;
-    font-size: 14px;
     font-family: inherit;
 }
 
@@ -166,7 +161,6 @@ table {
     border-collapse: collapse;
     background: var(--bg);
     border: 1px solid var(--border);
-    border-radius: 6px;
     overflow: hidden;
 }
 
@@ -179,10 +173,8 @@ td {
 }
 
 th {
-    background: var(--panel);
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
-    font-weight: 600;
     user-select: none;
 }
 
@@ -197,20 +189,19 @@ th.sortable:hover {
 }
 
 th.sortable::before {
-    content: "▾";
+    content: "↓";
     display: inline-block;
-    width: 0.9em;
     margin-right: 4px;
     color: transparent;
     text-align: left;
 }
 
 th.sortable[aria-sort="ascending"]::before {
-    content: "▴";
+    content: "↑";
     color: var(--text);
 }
 th.sortable[aria-sort="descending"]::before {
-    content: "▾";
+    content: "↓";
     color: var(--text);
 }
 
@@ -231,19 +222,20 @@ tbody tr:hover {
 }
 
 tbody td.num {
-    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family:
+        "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 .account {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 16px;
     width: 100%;
 }
 
 .avatar {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background: var(--border);
     object-fit: cover;
@@ -255,34 +247,28 @@ tbody td.num {
     min-width: 0;
     flex: 1;
     color: var(--text);
-    font-weight: 600;
 }
 
 .account-handle {
     display: block;
     color: var(--muted);
-    font-size: 12px;
-    font-weight: 400;
+    font-size: 11px;
 }
 
 .account-stat {
     flex-shrink: 0;
     margin-left: auto;
     text-align: left;
-    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 13px;
-    font-weight: 600;
+    font-family:
+        "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     font-variant-numeric: tabular-nums;
 }
 
 .account-stat-label {
     display: block;
     font-family: "IBM Plex Sans", system-ui, sans-serif;
-    font-size: 10px;
-    font-weight: 500;
+    font-size: 11px;
     color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
     margin-bottom: 2px;
 }
 
@@ -314,10 +300,10 @@ tbody td.posts-per-day {
 
 @media (max-width: 880px) {
     main {
-        padding: 20px 14px 60px;
+        padding: 20px 12px 60px;
     }
     h1 {
-        font-size: 20px;
+        font-size: 18px;
     }
     table {
         border-radius: 0;
@@ -372,23 +358,18 @@ tbody td.posts-per-day {
     }
     tbody td.num {
         text-align: left;
-        font-size: 13px;
-        font-weight: 600;
     }
     tbody td.num::before {
         content: attr(data-label);
         display: block;
-        font-size: 10px;
-        font-weight: 500;
+        font-size: 11px;
         color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.03em;
         margin-bottom: 2px;
         font-family: "IBM Plex Sans", system-ui, sans-serif;
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 360px) {
     tbody tr {
         grid-template-columns: 1fr 1fr;
     }

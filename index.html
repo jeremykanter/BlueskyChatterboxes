@@ -6,11 +6,7 @@
         <meta name="color-scheme" content="light dark" />
         <title>Bluesky Chatterboxes</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossorigin
-        />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap"
@@ -23,6 +19,11 @@
             <p class="subtitle">
                 Enter your Bluesky handle to see how often the accounts you
                 follow post.
+                <span class="hint"
+                    >No login required. Uses the public Bluesky API. Doesn't
+                    save any of your personal data. Large follow lists may take
+                    a bit to load.</span
+                >
             </p>
 
             <form id="form">
@@ -31,18 +32,13 @@
                     <input
                         id="handle"
                         type="text"
-                        placeholder="e.g. jeremykanter.com or jeremykanter.bsky.social"
+                        placeholder="e.g. jeremykanter.bsky.social"
                         autocomplete="off"
                         spellcheck="false"
                         required
                     />
                     <button type="submit" id="go">Analyze</button>
                 </div>
-                <p class="hint">
-                    No login required. Bluesky Chatterboxes uses the public
-                    Bluesky API and does not save any of your personal data.
-                    Large follow lists may take a few minutes to load.
-                </p>
             </form>
 
             <section id="status" class="status" hidden></section>
@@ -59,7 +55,7 @@
                 <table>
                     <thead id="head">
                         <tr>
-                            <th>Account</th>
+                            <th></th>
                             <th class="num sortable" data-sort-key="total">
                                 Total Posts
                             </th>
