@@ -1,6 +1,6 @@
 # Bluesky Chatterboxes
 
-A static web tool. Enter your Bluesky handle and see how often the accounts you follow post. Go to `https://jeremykanter.github.io/BlueskyChatterboxes/` to try it out.
+A static web tool. Enter your Bluesky handle and see how often the accounts you follow post. Go to [https://jeremykanter.github.io/BlueskyChatterboxes/](https://jeremykanter.github.io/BlueskyChatterboxes/) to try it out.
 
 ## How it works
 
