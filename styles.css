@@ -130,7 +130,7 @@ button:disabled {
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 16px;
+    padding: 12px;
     margin-bottom: 16px;
     color: var(--muted);
 }
