@@ -254,6 +254,7 @@ tbody td.num {
     min-width: 0;
     flex: 1;
     color: var(--text);
+    gap: 2px;
 }
 
 .account-handle {
