@@ -143,7 +143,7 @@ async function gatherActivity(did, cutoffMs) {
     const data = await api("app.bsky.feed.getAuthorFeed", {
       actor: did,
       limit: 100,
-      filter: "posts_with_replies",
+      filter: "posts_no_replies",
       ...(cursor ? { cursor } : {}),
     });
     const items = data.feed || [];
