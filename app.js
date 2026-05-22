@@ -240,11 +240,11 @@ function renderRows() {
             ${escapeHtml(r.displayName || r.handle)}
             <span class="account-handle">@${escapeHtml(r.handle)}</span>
           </div>
+          ${renderSparkline(r.timestamps, state.cutoff)}
           <div class="account-stat">
             <span class="account-stat-label">Posts/Day</span>
             <span class="account-stat-value">${r.perDay.toFixed(2)}</span>
           </div>
-          ${renderSparkline(r.timestamps, state.cutoff)}
         </div>
       </td>
       <td class="num posts-per-day" data-label="Posts/Day">${r.perDay.toFixed(2)}</td>

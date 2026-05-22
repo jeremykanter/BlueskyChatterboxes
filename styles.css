@@ -265,7 +265,7 @@ tbody td.num {
 
 .account-stat {
     flex-shrink: 0;
-    margin-left: auto;
+    margin-left: 12px;
     text-align: left;
     font-family:
         "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -289,7 +289,6 @@ tbody td.posts-per-day {
     height: 20px;
     color: var(--text);
     flex-shrink: 0;
-    margin-left: 12px;
 }
 
 .progress {
