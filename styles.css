@@ -166,7 +166,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     background: var(--bg);
-    border: 1px solid var(--border);
+    border: none);
     overflow: hidden;
 }
 
