@@ -53,9 +53,16 @@ main {
 }
 
 h1 {
-    margin: 0 0 6px;
+    margin: 0 0 8px;
     font-size: 16px;
     font-weight: 400;
+}
+
+.heading-divider {
+    height: 1px;
+    width: 24px;
+    background: var(--border);
+    margin: 0 0 8px;
 }
 
 .subtitle {
