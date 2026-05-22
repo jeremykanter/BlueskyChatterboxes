@@ -56,11 +56,13 @@ main {
 
 h1 {
     margin: 0 0 6px;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .subtitle {
     margin: 0 0 24px;
+    width: 50%;
+    text-wrap: balance;
 }
 
 form {
@@ -86,11 +88,12 @@ input[type="text"] {
     border-radius: 6px;
     color: var(--text);
     font-family: inherit;
+    font-size: 13px;
 }
 
 input[type="text"]:focus {
     outline: none;
-    border: 2px solid var(--accent);
+    border: 1px solid var(--accent);
 }
 
 button {
@@ -101,6 +104,7 @@ button {
     border-radius: 6px;
     cursor: pointer;
     font-family: inherit;
+    font-size: 13px;
 }
 
 button:hover:not(:disabled) {
@@ -139,6 +143,7 @@ button:disabled {
 .sort-control label {
     margin: 0;
     color: var(--muted);
+    font-size: 13px;
 }
 
 .sort-control select {
@@ -149,6 +154,7 @@ button:disabled {
     border: 1px solid var(--border);
     border-radius: 6px;
     font-family: inherit;
+    font-size: 13px;
 }
 
 .sort-control select:focus {
@@ -174,6 +180,7 @@ td {
 
 th {
     font-size: 11px;
+    font-weight: 400;
     color: var(--muted);
     user-select: none;
 }
@@ -229,7 +236,7 @@ tbody td.num {
 .account {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     width: 100%;
 }
 
@@ -281,6 +288,7 @@ tbody td.posts-per-day {
     height: 20px;
     color: var(--muted);
     flex-shrink: 0;
+    margin-left: 12px;
 }
 
 .progress {
@@ -302,8 +310,8 @@ tbody td.posts-per-day {
     main {
         padding: 20px 12px 60px;
     }
-    h1 {
-        font-size: 18px;
+    .subtitle {
+        width: 100%;
     }
     table {
         border-radius: 0;
