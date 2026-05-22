@@ -286,7 +286,7 @@ tbody td.posts-per-day {
 .sparkline {
     width: 80px;
     height: 20px;
-    color: var(--muted);
+    color: var(--text);
     flex-shrink: 0;
     margin-left: 12px;
 }
@@ -345,10 +345,6 @@ tbody td.posts-per-day {
     }
     tbody td:first-child {
         margin-bottom: 10px;
-    }
-    .sparkline {
-        width: 100px;
-        height: 24px;
     }
     .account-name {
         flex: 1;
