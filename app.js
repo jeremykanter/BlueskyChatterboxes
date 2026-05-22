@@ -90,7 +90,7 @@ async function run(handle) {
     activity[i] = await gatherActivity(f.did, cutoff);
     completed += 1;
     setStatus(
-      `Counting posts in the last ${WINDOW_DAYS} days… ${completed} / ${follows.length} accounts`,
+      `Counting posts in the last ${WINDOW_DAYS} days for ${completed} / ${follows.length} accounts…`,
       { progress: completed / follows.length },
     );
   });

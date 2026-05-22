@@ -1,7 +1,6 @@
 :root {
     --bg: #ffffff;
     --panel: #f7f7f7;
-    --panel-alt: #f0f0f0;
     --border: #e6e6e6;
     --text: #000000;
     --muted: #999999;
@@ -15,10 +14,9 @@
     :root {
         --bg: #000000;
         --panel: #080808;
-        --panel-alt: #0f0f0f;
         --border: #1a1a1a;
         --text: #ffffff;
-        --muted: #666666;
+        --muted: #999999;
         --accent: #ffffff;
         --accent-hover: #f0f0f0;
         --error: #ff4d4d;
@@ -192,7 +190,7 @@ th.sortable {
 }
 
 th.sortable:hover {
-    background: var(--panel-alt);
+    background: var(--panel);
     color: var(--text);
 }
 
@@ -313,11 +311,6 @@ tbody td.posts-per-day {
     }
     .subtitle {
         width: 100%;
-    }
-    table {
-        border-radius: 0;
-        border-left: none;
-        border-right: none;
     }
     thead {
         display: none;
