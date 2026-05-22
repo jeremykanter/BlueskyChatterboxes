@@ -63,6 +63,7 @@ h1 {
     margin: 0 0 24px;
     width: 50%;
     text-wrap: balance;
+    line-height: 1.5;
 }
 
 form {
@@ -166,7 +167,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     background: var(--bg);
-    border: none);
+    border: none;
     overflow: hidden;
 }
 
