@@ -81,18 +81,14 @@ async function run(handle) {
   const cutoff = Date.now() - WINDOW_MS;
   const activity = new Array(follows.length).fill(null);
   let completed = 0;
-  setStatus(
-    `Counting posts in the last ${WINDOW_DAYS} days for ${follows.length} accounts…`,
-    { progress: 0 },
-  );
+  setStatus(`Counting posts for ${follows.length} accounts…`, { progress: 0 });
 
   await pool(follows, CONCURRENCY, async (f, i) => {
     activity[i] = await gatherActivity(f.did, cutoff);
     completed += 1;
-    setStatus(
-      `Counting posts in the last ${WINDOW_DAYS} days for ${completed} / ${follows.length} accounts…`,
-      { progress: completed / follows.length },
-    );
+    setStatus(`Counting posts for ${completed} / ${follows.length} accounts…`, {
+      progress: completed / follows.length,
+    });
   });
 
   state.profile = profile;

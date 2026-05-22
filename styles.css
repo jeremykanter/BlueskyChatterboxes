@@ -310,7 +310,7 @@ tbody td.posts-per-day {
     height: 100%;
     background: var(--accent);
     width: 0%;
-    transition: width 0.2s;
+    transition: width 0.2s ease-in-out;
 }
 
 @media (max-width: 880px) {
