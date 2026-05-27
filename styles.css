@@ -9,7 +9,7 @@
     --error: #ff3333;
     --avatar-stroke: rgba(0, 0, 0, 0.1);
     --cell-tint: #000000;
-    --cell-tint-max: 40%;
+    --cell-tint-max: 33%;
 }
 
 @media (prefers-color-scheme: dark) {
