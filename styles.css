@@ -8,6 +8,8 @@
     --accent-hover: #0f0f0f;
     --error: #ff3333;
     --avatar-stroke: rgba(0, 0, 0, 0.1);
+    --cell-tint: #000000;
+    --cell-tint-max: 40%;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,6 +23,7 @@
         --accent-hover: #f0f0f0;
         --error: #ff4d4d;
         --avatar-stroke: rgba(255, 255, 255, 0.1);
+        --cell-tint: #ffffff;
     }
 }
 
@@ -240,6 +243,14 @@ tbody td.num {
         "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
+tbody td.tint {
+    background-color: color-mix(
+        in srgb,
+        var(--cell-tint) calc(var(--tint, 0) * var(--cell-tint-max)),
+        transparent
+    );
+}
+
 .account {
     display: flex;
     align-items: center;
@@ -364,6 +375,9 @@ tbody td.posts-per-day {
     }
     tbody td.num {
         text-align: left;
+    }
+    tbody td.tint {
+        background-color: transparent;
     }
     tbody td.num::before {
         content: attr(data-label);

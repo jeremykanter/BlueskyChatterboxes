@@ -220,6 +220,11 @@ function sleep(ms) {
 
 function renderRows() {
   const sorted = state.rows.slice().sort(compareRows);
+  const max = (key) => Math.max(0, ...state.rows.map((r) => r[key]));
+  const maxTotal = max("total");
+  const maxOriginals = max("originals");
+  const maxReposts = max("reposts");
+  const frac = (value, m) => (m > 0 ? value / m : 0);
   const frag = document.createDocumentFragment();
   for (const r of sorted) {
     const tr = document.createElement("tr");
@@ -244,9 +249,9 @@ function renderRows() {
         </div>
       </td>
       <td class="num posts-per-day" data-label="Posts/Day">${r.perDay.toFixed(2)}</td>
-      <td class="num" data-label="Total">${r.total}</td>
-      <td class="num" data-label="Originals">${r.originals}</td>
-      <td class="num" data-label="Reposts">${r.reposts}</td>
+      <td class="num tint" data-label="Total" style="--tint:${frac(r.total, maxTotal)}">${r.total}</td>
+      <td class="num tint" data-label="Originals" style="--tint:${frac(r.originals, maxOriginals)}">${r.originals}</td>
+      <td class="num tint" data-label="Reposts" style="--tint:${frac(r.reposts, maxReposts)}">${r.reposts}</td>
     `;
     frag.appendChild(tr);
   }
